@@ -1,0 +1,621 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{listings}
+\lstset{
+	columns=fixed,       
+	numbers=none,                                        
+	frame=none,                                          
+	backgroundcolor=\color[RGB]{255,255,255},            
+	keywordstyle=\color[RGB]{40,40,255},                 
+	commentstyle=\it\color[RGB]{0,96,96},                
+	stringstyle=\rmfamily\slshape\color[RGB]{128,0,0},   
+	showstringspaces=false,                              
+	language=matlab,                                       
+}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Prediction of Remaining Discharge Time of Battery\\
+	{}}
+\author{\IEEEauthorblockN{ Xiaowen Ma}
+	\IEEEauthorblockA{\textit{Beijing University of Posts and Telecommunications} 
+		\\
+		Beijing, China \\
+		maxiaowen2018@bupt.edu.cn}
+}
+
+\maketitle
+
+\begin{abstract}
+	Lead-acid battery has been widely employed in industry, military and daily life. When the power supply fails, if it cannot be detected in time, it will cause the power supply to fail to play the corresponding role in time, causing major or even catastrophic accidents and irreparable economic losses. Studying battery life is of great significance to industrial development. During the process of lead-acid battery discharge with constant current intensity, the voltage monotonically decreases with the discharge time until reaching the rated minimum protection voltage (Um, which was set as $9V$ in this study). In the presented paper, the influence of current intensity, voltage and battery attenuation on the residual discharge time was analyzed. Moreover, three problems were determined and the corresponding solutions were proposed by establishing mathematical models, which therefore realizing the prediction of the battery life.
+\end{abstract}
+\begin{IEEEkeywords}
+	MATLAB, power function method, stepwise linear regression, prediction
+\end{IEEEkeywords}
+
+\section{Introduction}
+The analysis of Prediction of Remaining Discharge Time of Battery is divided into three questions.
+
+\textbf{Question One: } According to the sampling data of the complete discharge curve of the discharge test with different current intensity when the batteries of the same production batch leave the factory. Use the elementary function to represent each discharge curve, and give the average relative error of each discharge curve(MRE). 
+
+In the use of new batteries, discharge at $30A$, $40A$, $50A$, $60A$ and $70A$ respectively. According to the established model, when the measured voltage is 9.8 volts, what is the remaining discharge time of the battery?
+
+\textbf{Question Two: }  Establish a mathematical model of the discharge curve at any constant current intensity between $20A$ and $100A$, and use MRE to evaluate the accuracy of the model. 
+
+Use the table and graph to give the discharge curve when the current intensity is $55A$.
+
+\textbf{Question Three: } According to the recording data of the same batteries which are starting to discharge from full charge under different decay states with the same current intensity. Predict the remaining discharge time of the battery decay state.
+
+
+
+\section{Explanation of Symbols and Definition of Nouns}
+
+
+\begin{table}[htbp]
+	\begin{center}
+		\begin{tabular}{cc}
+			\toprule[1.5pt]
+			Symbol & Symbol Description \\
+	     	\midrule[1pt]
+	     	MRE & Average Relative Error \\
+	     	$t$ & Remaining Discharge Time \\
+	        $U$ &	Voltage \\
+	        $I$ &	Electric Current \\
+	        $a,b,c$    &	Undetermined Coefficients \\
+	         $t_i$   &	Discharge Samples \\
+	   $i$  &	Different Current Conditions\\
+	    $\mathord{\buildrel{\lower3pt\hbox{$\scriptscriptstyle\frown$}} 
+	    	\over t} $ &	Estimated Value of  $t_i$ 
+ \\
+	    $\varepsilon $ &	Residual \\
+			\bottomrule[1.5pt]
+		\end{tabular}
+	\end{center}
+\end{table}
+
+~\\
+~\\
+\section{Basic Assumptions}
+\begin{itemize}
+\item  Assumed that the resistance is constant.
+\item Assumed that there are no external factors that affect the change in voltage. (whether the battery is rusty, the environment, etc.)
+\item Assumed that charging is regulated, and the battery will not malfunction due to operational reasons.
+\item Assumed that errors caused by computer operation in all programs are negligible.
+\item Assumed that the ignored discharge process has little effect on the model, it can be ignored.
+
+\end{itemize}
+
+\section{Establishment and Test of the Model}
+$f$ is the elementary function, that is, the basic elementary functions—— power function, exponential function, logarithmic function, trigonometric function and inverse trigonometric function, and their finite step four arithmetic operations. 
+
+According to Figure \ref{fig1} battery discharge curve.
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[scale = 0.3]{fig1.png}}
+	\caption{Discharge time}
+	\label{fig1}
+\end{figure}
+
+Trigonometric functions, inverse trigonometric functions, and logarithmic functions are not suitable for fitting functions, leaving only power functions and exponential functions.
+
+Notice: When $U=9V$ , the remaining discharge time is 0, so only the index is not enough. Therefore, using this feature, a power function is used for fitting. 
+\begin{equation}
+t = c{\left( {U - 9} \right)^a}{I^b} \label{eq1}
+\end{equation}
+
+\emph{$a,b,c$ are undetermined coefficients.}
+ 
+This is a nonlinear least squares problem, which needs to be calculated by software, and the selection of the initial point needs to be tried. The calculation results of Matlab software (see \cite{b1}) are as follows.
+
+\begin{equation}
+\begin{aligned}{}
+a =& 1.934672\\
+b =& - 1.047256\\
+c =& 33610.217827
+\end{aligned} \label{eq2}
+\end{equation}
+
+
+\subsection{Solution and Test of Problem 1 and Problem 2}
+
+According to the experience of daily life, people are more concerned about the remaining discharge time of the battery than the discharged time. Therefore, the remaining discharge time curve of the battery is drawn, as shown in figure \ref{fig2}.
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[scale = 0.3]{fig2.png}}
+	\caption{Remain discharge time}
+	\label{fig2}
+\end{figure}
+
+According to the requirements of the research topic, it is best to obtain the overall expression of the relationship between the residual discharge time and the voltage and current intensity.
+\begin{equation}
+t = f\left( {U,I} \right) 
+\label{eq3}
+\end{equation}
+
+ \emph{$t$ is the remain discharge time, $U$ is the voltage, $I$ is the current.}
+ 
+ If the error calculated by the overall expression is large, change the expression to construct the voltage and remaining discharge time at different current intensities.
+ 
+ \begin{equation}
+ t = {f_i}\left( U \right),i = 1,2, \cdots ,9, \label{eq4}
+ \end{equation}
+ 
+  \emph{$t$ is the remain discharge time, $U$ is the voltage, $i$ is the different current conditions.}
+  
+  If the overall expression \eqref{eq3} of the relationship between the remaining discharge time and the voltage and current intensity is obtained, the answers to questions 1 and 2 are simple. Just substitute $U=9.8V$ and different current intensity values, and substitute $I=55A$ and different voltage values.    
+  
+  If  I only get the expression \eqref{eq2} of the remaining discharge time under different currents with respect to voltage, the solution to Problem 2 is slightly more complicated, and I need to use Equation \eqref{eq4} to derive the expression about voltage at a fixed current intensity(such as $I=55A$)
+  
+  Estimate the remaining discharge time of the current intensity.
+  
+  From a modeling point of view, it is difficult to obtain the overall expression of voltage and current and meet the accuracy requirements, so here only discussed the modeling method of the overall expression \eqref{eq3} of the relationship between the remaining discharge time and the voltage and current intensity.
+  
+  With the models (1) and (2), the calculation of question 1 and question 2 is simple, just substitute $U=9.8V$ and different current strength values, and substitute $I=55A$ and different voltage values. But before the model is used, the average relative error needs to be calculated.
+  
+  \subsubsection{Average Relative Error} The accuracy of using the discharge curve to predict the remaining discharge time (or remaining capacity) of the battery depends on the quality of the discharge curve in the low voltage section. However, the sampling points in the low voltage section of the discharge curve at equal time intervals are relatively sparse. Based on this fact, the mathematical expression of MRE is defined as:
+  
+  \begin{equation}
+{\rm{MRE}} = \frac{1}{n}\sum\limits_{i = 1}^n {\left| {\frac{{{t_i} - {{\mathord{\buildrel{\lower3pt\hbox{$\scriptscriptstyle\frown$}} 
+  							\over t} }_i}}}{{{t_i}}}} \right|} 
+  						\label{eq5}
+  \end{equation}
+  
+  $t_i$ is the Discharge Samples, $\mathord{\buildrel{\lower3pt\hbox{$\scriptscriptstyle\frown$}} 
+  	\over t} $ is the estimated value of  $t_i$ 
+  
+ Table \ref{tab1} shows the MRE value calculated by formula \eqref{eq5} under different current intensities.
+\begin{table}[htbp]
+	\caption{MRE of discharge time under different currents}
+	\label{tab1}
+	\begin{tabular}{|l|l|l|l|l|l|}
+		\hline
+		Current/A & 20 & 30 & 40 & 50 &      60  \\ \hline
+		MRE/\% & 0.3354 & 0.7761 & 1.3174 & 2.6052 &2.1840 \\ \hline
+		   & 70 & 80 & 90 &  100 &  \\  \hline 
+         	 &	1001.0031 & 3.4490 & 5.7217 & 12.4465 &  \\  \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[]
+	\centering
+	\caption{The remaining discharge time of the battery under 9.8V}
+	\label{tab2}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Current/A & Actual Value/min & Estimated Value/min \\  \hline
+		30 & 594 & 619.53 \\ \hline
+		40 & 430 & 458.37 \\ \hline
+		50 & 326 & 362.85 \\ \hline
+		60 & 277 & 299.78 \\ \hline
+		70 & 254 & 255.08 \\ \hline
+	\end{tabular}
+\end{table}
+
+\subsubsection{ Problem Calculation}If the above MRE passes the test, it can be calculated. Table \ref{tab2} gives the estimated and actual values of the remaining discharge time at a voltage of $9.8 V$. Table \ref{tab3} gives the estimated value of the remaining discharge time of the battery when the current intensity is $55A$.
+
+\begin{table}[]
+	\centering
+\caption{Estimated value of remaining battery discharge time under 55A}
+\label{tab3}
+	\begin{tabular}{|l|l|l|l|l|l|}
+		\hline
+		Voltage/V & 10.3 & 10.0 & 9.8 & 9.5 & 9.0 \\ \hline
+		\begin{tabular}[c]{@{}l@{}}Remaining Discharge\\  Time/min\end{tabular} & 840 & 506 & 328 & 132 & 0 \\ \hline
+	\end{tabular}
+\end{table}
+
+Figure \ref{fig3} shows the remaining discharge time under different current intensities at $9.8V$. 
+\begin{figure}[htbp]]
+	\centerline{\includegraphics[scale = 0.3]{fig3.png}}
+	\caption{The remaining discharge time under  different current intensities}
+	\label{fig3}
+\end{figure}
+
+Figure \ref{fig4} shows the remaining discharge time under different voltages at $55A$ current intensity.
+\begin{figure}[htbp]
+	\centerline{\includegraphics[scale = 0.3]{fig4.png}}
+	\caption{The remaining discharge time under different voltages}
+	\label{fig4}
+\end{figure}
+
+Finally, the discharge time curve and fitting curve of the battery under different currents and different voltages are given (see Figure \ref{fig5}).
+\begin{figure}[htbp]
+	\centerline{\includegraphics[scale = 0.3]{fig5.png}}
+	\caption{Discharge time curve and fitting curve}
+	\label{fig5}
+\end{figure}
+
+\subsection{Solution and Test of Problem 3}
+
+Question 3 is to consider the remaining discharge time of the same battery at the same current intensity under different attenuation states.
+
+\subsubsection{ Power Function Method} Read the data and draw four discharge curves in different states (see Figure \ref{fig6}). The goal of Question 3 is to fill in the missing curve in Decay State 3.
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[scale = 0.3]{fig6.png}}
+	\caption{Discharge time curves in different states}
+	\label{fig6}
+\end{figure}
+
+  There are two ways to supplement the data. One is to use the found data for data fitting. The fitted equation is as follows.
+  \begin{equation}
+  t = b - c{\left( {U - 9} \right)^a}
+  \label{eq6}
+  \end{equation}
+  
+  \emph{$a, b, c$} are undetermined coefficients.
+  
+  The form of formula \eqref{eq6} is obtained from the analysis of questions 1 and 2, where the meaning of parameter b is the final discharge time of the battery. 
+  
+  The following formula is calculated.
+  \begin{equation}
+ \begin{aligned}{}
+  a =& 1.791842\\
+  b =& 882.256937\\
+  c =& 447.235959
+  \end{aligned} \label{eq7}
+   \end{equation}
+   
+  In this way, the remaining discharge time of the State 3 battery is $882.26 -596.20 = 286.06 (min)$.
+  \subsubsection{Linear Regression Method}The basic idea here is to consider the decay state 3 as a linear combination of the other three states, as showed in equation \eqref{eq8}. In the formula, New represents a new battery state, and I、II and III represent State 1, State 2, and State 3.  $\varepsilon $ is residual and satisfied $\varepsilon \sim N\left(0, \sigma^{2}\right)$ .
+ \begin{equation}
+ {\rm{III}} = {\beta _0} + {\beta _1}{\rm{New}} + {\beta _2}{\rm{I}} + {\beta _3}{\rm{II}} + \varepsilon 
+ \label{eq8}
+ \end{equation}
+
+   Calculated by R software.
+  \begin{figure}[htbp]
+  	\centerline{\includegraphics[scale = 0.4]{fig.png}}
+  \end{figure}
+~\\
+~\\
+~\\
+~\\
+
+  From the calculation results: the coefficient cannot pass the test.
+   
+  In addition, not only linear combinations are considered, but also quadratic terms and even higher order terms can be considered. By using the method of stepwise regression analysis, the final regression equation is determined as the formula \eqref{eq9}. 
+ \begin{equation}
+ {\rm{III}} = {\beta _0} + {\beta _1}{\rm{I}} + {\beta _2}{\rm{II}} + {\beta _3}{{\rm{I}}^{\rm{2}}} + \varepsilon \label{eq9}
+ \end{equation}
+ 
+  After calculation, the following results are obtained, and the correlations of coefficients and equations pass the test.
+    \begin{figure}[htbp]
+  	\centerline{\includegraphics[scale = 0.4]{fign.png}}
+  \end{figure}
+
+Then make a residual test. Figure \ref{fig7} is a residual plot, and Figure \ref{fig8} is a Q-Q normal plot.
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[scale = 0.3]{fig7.png}}
+	\caption{Regression diagnosis—— Residual vs Fitted}
+	\label{fig7}
+\end{figure}
+\begin{figure}[htbp]
+	\centerline{\includegraphics[scale = 0.3]{fig8.png}}
+	\caption{Regression diagnosis——Normal Q-Q}
+	\label{fig8}
+\end{figure}
+After inspection and diagnosis are completed, the data in the second half of state 1 and state 2 can be used to predict the missing data in the second half of state 3. The specific calculation process is omitted, and the supplementary data are drawn on the graph, as showed in Figure \ref{fig9}.
+
+From a graphical point of view, this supplementary method is reasonable and can be used for estimation. The discharge time estimated by the regression method is 805.73 minutes, and the remaining discharge time is 209.53 minutes.
+
+\begin{figure}[htbp]
+	\centerline{\includegraphics[scale = 0.3]{fig9.png}}
+	\caption{Regression analysis method to supplement missing data}
+	\label{fig9}
+\end{figure}
+\section{Conclusion—Evaluation and Promotion of the Model}
+\subsection{The Advantages of the Model}
+
+1. Use the least squares method to analyze the data, which is more convincing and theoretical.
+
+2. The model building process has a sense of hierarchy.
+
+3. The accuracy of the established model is high.
+
+\subsection{Disadvantages of the Model}
+1. Constrained by data, a small number of factors have not been considered.
+
+2. The model uses an exponential function to make predictions, which is sensitive to the parameter b and requires relatively high requirements.
+
+\subsection{Model Promotion}
+The model can be used to predict battery life. The model is not limited to solving the problem of how to improve the utilization of lead-acid batteries, but also has a reference role in the research of other batteries.
+
+\begin{thebibliography}{00}
+	\bibitem{b1} Xue Yi, Chen Liping. Practical Course in R Language. Beijing: Tsinghua University Press, 2014.10.
+	\bibitem{b2} Jiang Qiyuan, Xie Jinxing, Ye Jun. Mathematical Model (Fifth Edition). Beijing: Higher Education Press, 2018.05.
+	\bibitem{b3} Si Shoukui, Sun Zhaoliang. Mathematical modeling algorithm and application (Second Edition). Beijing: National Defense Industry Press, 2015.05.
+	\bibitem{b4} Han Zhonggeng. Mathematical modeling methods and their applications. Beijing: Higher Education Press, 2005.
+	\bibitem{b5} Bai Qizheng. Case Analysis of Mathematical Modeling. Beijing: Ocean Press, 2000.
+	\bibitem{b6} Chen Guang, Ren Zhiliang, Sun Haizhu. Least squares curve fitting and Matlab implementation [J]. Ordnance Industry Automation, 2005,24 (3): 107-108.
+	\bibitem{b7} Cui Wenshun, Li Jianling. Discussing the algorithm of average relative error with Li Qingzhen et al [J]. Hebei Forestry Research, 1989 (4).
+	\bibitem{b8} Si Shoukui, editor-in-chief of Sun Zhaoliang. Mathematical modeling algorithm and application [M], 2nd edition, Beijing ,: National Defense Industry Press, 2016.1.
+	\bibitem{b9} Edited by Wu Song et al., SPSS Statistical Analysis Daquan [M], Beijing, Tsinghua University Press, 2014.10.
+	\bibitem{b10} Fang Kaitai, Jin Hui, Chen Qingyun. Practical regression analysis. Beijing: Science Press, 1988.
+	\bibitem{b11} Mark M M. Mathematical modeling methods and analysis. Liu Laifu, Yang Chun, Huang Haiyang. Beijing: Mechanical Industry Press, 2005.
+\end{thebibliography}
+
+\section*{Appendix}
+\subsection*{1.Figure 1 program}
+\begin{lstlisting}
+data=xlsread('C:\Users\zxj74\Desktop\
+cumcm2016c\CUMCM-2016C-Chinese\
+CUMCM2016-C-Appendix-Chinese.xlsx');
+X=data(:,1)';
+X_20A=data(:,1)';
+Y_20A=data(:,2)';
+plot(X_20A,Y_20A,'r');
+hold on
+%*********************
+Y_30A=data(:,3)'
+K=length(Y_30A);
+X_30A=X(1:K);
+plot(X_30A,Y_30A,'b');
+%*********************
+Y_40A=data(:,4)'
+K=length(Y_40A);
+X_40A=X(1:K);
+plot(X_40A,Y_40A,'G');
+%*********************
+Y_50A=data(:,5)'
+K=length(Y_50A);
+X_50A=X(1:K);
+plot(X_50A,Y_50A,'k');
+%*********************
+Y_60A=data(:,6)'
+K=length(Y_60A);
+X_60A=X(1:K);
+plot(X_60A,Y_60A);
+%*********************
+Y_70A=data(:,7)'
+K=length(Y_70A);
+X_70A=X(1:K);
+17
+plot(X_70A,Y_70A);
+%*********************
+Y_80A=data(:,8)'
+K=length(Y_80A);
+X_80A=X(1:K);
+plot(X_80A,Y_80A);
+%*********************
+Y_90A=data(:,9)'
+K=length(Y_90A);
+X_90A=X(1:K);
+plot(X_90A,Y_90A);
+%*********************
+Y_100A=data(:,10)'
+K=length(Y_100A);
+X_100A=X(1:K);
+plot(X_100A,Y_100A);
+xlabel('Discharge time/min')
+ylabel('Voltage/V')
+legend('20A', '30A','40A','50A',
+'60A','70A','80A','90A','100A')
+title('Discharge curve')
+\end{lstlisting}
+
+\subsection*{2.Figure 2 program}
+\begin{lstlisting}
+data=xlsread('C:\Users\zxj74\Desktop\
+cumcm2016c\CUMCM-2016C-Chinese\
+CUMCM2016-C-Appendix-Chinese.xlsx');
+X=data(:,1)';
+X_20A=data(:,2)';
+Y_20A=(3764-data(:,1))';
+plot(X_20A,Y_20A,'r');
+hold on
+%*********************
+X_30A=data(:,3)'
+K=length(Y_30A);
+Y_30A=2454-X(1:K);
+plot(X_30A,Y_30A,'b');
+%*********************
+X_40A=data(:,4)'
+K=length(Y_40A);
+Y_40A=1724-X(1:K);
+plot(X_40A,Y_40A,'G');
+%*********************
+X_50A=data(:,5)'
+K=length(Y_50A);
+Y_50A=1308-X(1:K);
+plot(X_50A,Y_50A,'k');
+%*********************
+X_60A=data(:,6)'
+K=length(Y_60A);
+Y_60A=1044-X(1:K);
+plot(X_60A,Y_60A);
+%*********************
+X_70A=data(:,7)'
+K=length(Y_70A);
+Y_70A=862-X(1:K);
+plot(X_70A,Y_70A);
+%*********************
+X_80A=data(:,8)'
+K=length(Y_80A);
+Y_80A=730-X(1:K);
+plot(X_80A,Y_80A);
+%*********************
+X_90A=data(:,9)'
+K=length(Y_90A);
+Y_90A=620-X(1:K);
+plot(X_90A,Y_90A);
+%*********************
+X_100A=data(:,10)'
+K=length(Y_100A);
+Y_100A=538-X(1:K);
+plot(X_100A,Y_100A);
+xlabel('Remain discharge time/min')
+ylabel('Voltage/V')
+legend('20A', '30A','40A','50A',
+'60A','70A','80A','90A','100A')
+title('Remain discharge curve')
+\end{lstlisting}
+
+\subsection*{3.Figure 3 program}
+\begin{lstlisting}
+x=30:0.01:70;
+y=33610.217827*(0.8^1.934672)*
+x.^(-1.047256);
+plot(x,y,'-k')
+xlabel('Electric current/A')
+ylabel('Remaining discharge time/min')
+
+\end{lstlisting}
+\subsection*{4.Figure 4 program}
+\begin{lstlisting}
+x=9:0.01:10.5;
+y=33610.217827*((x-9).^1.934672)*
+55^(-1.047256);
+plot(x,y,'-k')
+xlabel('Voltage/V')
+ylabel('Remaining discharge time/min')
+\end{lstlisting}
+\subsection*{5.Figure 5 program}
+\begin{lstlisting}
+data=xlsread('C:\Users\zxj74\Desktop\
+cumcm2016c\CUMCM-2016C-Chinese\
+CUMCM2016-C-Appendix-Chinese.xlsx');
+X=data(:,1)';
+X_20A=data(:,1)';
+Y_20A=data(:,2)';
+plot(X_20A,Y_20A,'r');
+hold on
+plot(33610.217827*(Y_20A-9).^1934672*
+20^(-1.047256),Y_20A,'k');
+%*********************
+Y_30A=data(:,3)'
+K=length(Y_30A);
+X_30A=X(1:K);
+plot(X_30A,Y_30A,'b');
+plot(33610.217827*(Y_30A-9).^1934672*
+20^(-1.047256),Y_30A,'k');
+%*********************
+Y_40A=data(:,4)'
+K=length(Y_40A);
+X_40A=X(1:K);
+plot(X_40A,Y_40A,'G')
+plot(33610.217827*(Y_40A-9).^1934672*
+20^(-1.047256),Y_40A,'k');
+%*********************
+Y_50A=data(:,5)'
+K=length(Y_50A);
+X_50A=X(1:K);
+plot(X_50A,Y_50A,'k');
+plot(33610.217827*(Y_50A-9).^1934672*
+20^(-1.047256),Y_50A,'k');
+%*********************
+Y_60A=data(:,6)'
+K=length(Y_60A);
+X_60A=X(1:K);
+plot(X_60A,Y_60A);
+plot(33610.217827*(Y_60A-9).^1934672*
+20^(-1.047256),Y_60A,'k');
+%*********************
+Y_70A=data(:,7)'
+K=length(Y_70A);
+X_70A=X(1:K);
+plot(X_70A,Y_70A);
+plot(33610.217827*(Y_70A-9).^1934672*
+20^(-1.047256),Y_70A,'k');
+%*********************
+Y_80A=data(:,8)'
+K=length(Y_80A);
+X_80A=X(1:K);
+plot(X_80A,Y_80A);
+plot(33610.217827*(Y_80A-9).^1934672*
+20^(-1.047256),Y_80A,'k');
+%*********************
+Y_90A=data(:,9)'
+K=length(Y_90A);
+X_90A=X(1:K);
+plot(X_90A,Y_90A);
+plot(33610.217827*(Y_90A-9).^1934672*
+20^(-1.047256),Y_90A,'k');
+%*********************
+Y_100A=data(:,10)'
+K=length(Y_100A);
+X_100A=X(1:K);
+plot(X_100A,Y_100A);
+plot(33610.217827*(Y_100A-9).^1934672*
+20^(-1.047256),Y_100A,'k');
+xlabel('Discharge time/min')
+ylabel('Voltage/V')
+legend('20A', '30A','40A','50A',
+'60A','70A','80A','90A','100A','fit')
+title('Discharge curve')
+\end{lstlisting}
+\subsection*{6.Figure 6 program}
+\begin{lstlisting}
+data=xlsread('C:\Users\zxj74\Desktop\
+cumcm2016c\CUMCM-2016C-Chinese\
+CUMCM2016-C-Appendix-Chinese_2.xlsx');
+X=data(:,2)';
+X_New=data(:,2)';
+Y_New=data(:,1)';
+plot(X_New,Y_New,'r');
+hold on
+%*********************
+X_1=data(:,3)'
+Y_1=data(:,1)';
+plot(X_1,Y_1,'b');
+% *********************
+X_2=data(:,4)'
+Y_2=data(:,1)';
+plot(X_2,Y_2,'G');
+% *********************
+X_3=data(:,5)'
+Y_3=data(:,1)';
+plot(X_3,Y_3,'m');
+% *********************
+xlabel('Discharge time/min')
+ylabel('Voltage/V')
+legend('New battery', 'Decay state 1',
+'Decay state 2','Decay state 3')
+title('Discharge time curves in
+ different states')
+\end{lstlisting}
+\subsection*{7.Figure 9 program}
+\begin{lstlisting}
+data=xlsread('C:\Users\zxj74\Desktop\
+cumcm2016c\CUMCM-2016C-Chinese\
+CUMCM2016-C-Appendix-Chinese_2.xlsx');
+X=data(:,2)';
+X_New=data(:,2)';
+Y_New=data(:,1)';
+plot(X_New,Y_New,'r');
+hold on
+%*********************
+X_1=data(:,3)'
+Y_1=data(:,1)';
+plot(X_1,Y_1,'b');
+% *********************
+X_2=data(:,4)'
+Y_2=data(:,1)';
+plot(X_2,Y_2,'G');
+% *********************
+X_3=data(:,5)'
+Y_3=data(:,1)';
+plot(X_3,Y_3,'m');
+Y=9.00:0.01:9.78;
+plot(882.256937-447.235959*(Y-9)
+.^(1.791842),Y,'k');
+% *********************
+xlabel('Discharge time/min')
+ylabel('Voltage/V')
+legend('New battery', 'Decay state 1',
+'Decay state 2','Decay state 3',
+'additional curve')
+title('Discharge time curves 
+in different states')
+\end{lstlisting}
+\end{document}
